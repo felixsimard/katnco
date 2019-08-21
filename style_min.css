@@ -1,0 +1,66 @@
+/*////////////////////MOBILE VIEW START///////////////////////////*/
+@media (max-width:767px) {
+
+.navbar {
+    padding: 15px 0px;
+    font-size: 25px;
+    font-weight: 700;
+}
+#menu {
+    width: 75vw;
+}
+#menu_icon {
+    position: fixed;
+    z-index: 100;
+    top: 15px;
+    left: 15px;
+    font-size: 2em;
+    font-weight: 700;
+    color: black;
+    cursor: pointer;
+}
+.slideshow {
+    width: 95%;
+    height: 65vh;
+    margin: 20px auto;
+    margin-top: 80px;
+    opacity: 1;
+    padding: 0px 15px;
+    text-align: center;
+    -webkit-transition: all 0.2s ease;
+    -moz-transition: all 0.2s ease;
+    transition: all 0.2s ease;
+}
+.jumbo_title {
+    position: relative;
+    top: 18%;
+    color: white;
+    font-size: 50px;
+    font-weight: 600;
+}
+.sub_jumbo_title {
+    position: relative;
+    top: 21%;
+    color: white;
+    font-size: 22px;
+    font-weight: 600;
+}
+.mission {
+    width: 95%;
+    margin: 20px auto;
+    margin-bottom: 50px;
+    padding: 0px;
+    font-size: 30px;
+    font-weight: 500;
+    padding: 15px 25px;
+    text-align: center;
+    color: black;
+}
+.mission_title {
+    margin: 5px auto;
+}
+.service {
+    font-size: 18px;
+}
+
+}

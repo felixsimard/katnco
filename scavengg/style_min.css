@@ -1,0 +1,239 @@
+/*////////////////////MOBILE VIEW START///////////////////////////*/
+@media (max-width:767px) {
+
+#header {
+    font-size: 18px;
+    padding: 0px 10px;
+}
+.logo_title {
+    font-size: 16px;
+    padding-top: 10px;
+}
+.header_text {
+    font-size: 10px;
+    margin: 5px auto;
+    padding-top: 10px;
+}
+#flyout {
+    font-size: 20px;
+}
+.block {
+    margin-top: 70px;
+}
+#status_bar {
+    min-height: 25px;
+    max-height: 75px;
+    font-size: 15px;
+    padding: 5px;
+}
+#welcome_mess {
+    font-size: 15px;
+    font-weight: 600;
+}
+.profile_pic {
+    width: 45px;
+    height: 45px;
+    background-size: 45px 45px;
+    margin: 5px auto;
+    margin-right: 10px;
+}
+.order_input_div {
+    width: 95%;
+    margin-left: 2.5%;
+}
+.order_input {
+    width: 98%;
+    padding: 0px;
+    font-size: 18px;
+    margin: 0px auto;
+}
+.order_input_wrapper {
+    width:82%;
+    display:inline-block;
+}
+.toggle_filter {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+}
+.toggle_price_filter {
+    width: 45px;
+    height: 45px;
+    font-size: 18px;
+}
+.search_rows {
+    padding: 5px;
+}
+.search_img {
+    width: 100%;
+    height: 175px;
+}
+.search_img:hover {
+    transform: scale(1.05);
+}
+.logo_box {
+    margin-top: 0px;
+    padding-top: 10px;
+}
+.logo {
+    min-width: 20px;
+    max-width: 30px;
+    min-height: 20px;
+    max-height: 30px;
+    margin: 2px auto;
+}
+.loading_logo {
+    position:relative;
+    top: 42%;
+    left: 35%;
+}
+#cart_pill {
+    position: relative;
+    top: 25px;
+    left: 25px;
+}
+#filter_display {
+    font-size: 12px;
+}
+#back_to_top {
+    top: 85%;
+    right: 25px;
+    font-size: 16px;
+}
+.flyout_img {
+    min-width: 50px;
+    max-width: 200px;
+    min-height: 50px;
+    max-height: 200px;
+    margin: 0px auto;
+    margin-bottom: 10px;
+}
+.light_btn {
+    min-width: 75px;
+    max-width: 150px;
+    background: white;
+    border: 2px #262626 solid;
+    color: #262626;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 5px;
+    margin: 5px 5px;
+}
+.dark_btn {
+    min-width: 75px;
+    max-width: 150px;
+    background: #61d395;
+    border: 2px #61d395 solid;
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 5px;
+    margin: 5px 5px;
+}
+#cart_pill {
+    top: 27px;
+    left: 33px;
+}
+.cart_rows {
+    padding: 0px;
+}
+.cart_pic {
+    min-width: 30px;
+    max-width: 50px;
+    min-height: 30px;
+    max-height: 50px;
+    margin: 0px auto;
+}
+.cart_text {
+    padding: 12px;
+    font-size: 10px;
+}
+#settings_payment {
+    height: 325px;
+    margin: 5px auto;
+}
+.iframe_wrapper {
+
+}
+.popup {
+    position: relative;
+    width: 85%;
+    min-height: 50%;
+    max-height: 85%;
+    top: 5%;
+    left: 7.5%;
+    font-size: 15px;
+    padding: 5px;
+}
+#cd_time {
+    font-size: 20px;
+}
+#login {
+    padding: 5px 10px;
+    font-size: 18px;
+}
+.close_login {
+    top: 5px;
+    left: 5px;
+    font-size: 20px;
+}
+.checked {
+    display:none;
+    color:#61d395;
+    margin: 2px auto;
+}
+#facebook_login {
+    min-width: 100px;
+    max-width: 250px;
+    height: 60px;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 10px 0px;
+    margin: 10px auto;
+}
+.phone_input {
+    width: 100%;
+    height: 40px;
+    font-size: 20px;
+    padding: 5px 0px;
+    margin: 10px auto;
+}
+.inputs {
+    height: 40px;
+    padding: 5px 0px;
+    margin: 10px auto;
+    font-size: 18px;
+    font-weight: 600;
+}
+.inputs_half {
+    height: 40px;
+    padding: 5px 0px;
+    margin: 10px auto;
+    font-size: 18px;
+}
+.small_text {
+    width: 100%;
+    font-size: 10px;
+    color: #262626;
+    margin: 0px auto;
+    margin-top: 10px;
+}
+.faq_title {
+    font-size: 20px;
+}
+.faq_ans {
+    font-size: 16px;
+    font-weight: 500;
+    margin: 5px auto;
+}
+.faq_date {
+    color: #e6e6e6;
+    font-size: 12px;
+}
+.footer {
+    width: 90%;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+}

@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html>
+<title>Scavengg - Browse or Request Streetwear</title>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <link rel="manifest" href="manifest.json" />
+    
+<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Favicon image -->
+<link rel="shortcut icon" href="https://scavengg.com/photos/logo_ico.ico"/>
+
+<!-- CSS and JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Josefin+Slab" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Arvo" rel="stylesheet">
+<!--
+<script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
+-->
+
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style_min.css">
+<script src="js/main.js"></script>
+<script src="js/ajax.js"></script>
+<script src="js/sms.js"></script>
+<script src="js/typed.js"></script>
+<script src="js/scroll.js"></script>
+<script src="js/status.js"></script>
+<script src="js/fb.js"></script>
+<script src="js/phone.js"></script>
+<script src="js/order.js"></script>
+<script src="js/pace.js"></script>
+<script src="js/pay.js"></script>
+<script src="js/upload_request.js"></script>
+
+<script>
+
+function link(url) {
+    var win = window.open(url, '_blank');
+    win.focus();
+}
+function showVal(price) {
+    max_price = price; // set global var
+    _("max_price").innerHTML = price;
+    search(event, _("order_input").value, categories, max_price);
+    _("filter_price").innerHTML = '<div class="filter_pill panel">0 - '+price+' $</div>';
+}
+function flyout(action, item_id) {
+    if(action == 'see_item') {
+        _("skin").style.display = 'block';
+        _("flyout").style.bottom = 0+'px';
+        _("page").style.overflowY = 'hidden';
+        item(item_id, "flyout");
+    } else if(action == "user_info") {
+        _("skin").style.display = 'block';
+        _("flyout").style.bottom = 0+'px';
+        _("page").style.overflowY = 'hidden';
+        userInfo("view_cart");
+    } else if(action == "checkout") {
+        _("skin").style.display = 'block';
+        _("flyout").style.bottom = 0+'px';
+        _("page").style.overflowY = 'hidden';
+        userInfo("view_cart", "checkout");
+    } else if(action == "price_filter") {
+        _("skin").style.display = 'block';
+        _("flyout").style.bottom = 0+'px';
+        _("page").style.overflowY = 'hidden';
+        _("flyout").innerHTML = '<div>Set your custom price range <button class="filter_btn hover" style="display:block;" onclick="setRange(2500)">Reset</button> </div><hr><div style="text-align:center;font-size:35px;font-weight:700;">0 &nbsp; - &nbsp; <span id="max_price">'+max_price+'</span> &nbsp; $</div><hr><input id="max_price_range" onchange="showVal(this.value)" type="range" min="10" max="5000" step="10" value="'+max_price+'">';
+    } else if(action == "custom_request") {
+        search(event, "", "", "", "custom_request");  
+        flyout("close");
+        setTimeout(function() {
+            _("custom_order_desc").focus();
+            status("Request a custom item. It's free. Attach an optional image.");
+        }, 750);
+    } else if(action == "close") {
+        _("skin").style.display = 'none';
+        _("flyout").style.bottom = -90+'%';
+        _("page").style.overflowY = 'auto';
+    }
+
+}
+function userInfo(action, action2) {
+    activated();
+    if(action == "view_cart") {
+        if(profile_check == false) {
+            popLogin('open');
+        } else {
+            var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/user.php');
+            ajax.onreadystatechange = function () {
+                if (ajaxReturn(ajax) == true) {
+                    if(ajax.responseText.trim() == "") {
+                        //status("An error occurred while fetching your information, sorry.", "black");
+                        flyout('close');
+                        popLogin('open');
+                    } else {
+                        var array = ajax.responseText.split('|');
+                        _("flyout").innerHTML = array[0];
+                        fbapi();
+                        initMap(); // initialize the address input
+                        _("delivery_address").disabled = false;
+                        _("cart_purchases_div").style.display = 'block';
+                        _("try_out_custom_order").style.display = 'block';
+                        if(action2 == "checkout") {
+                            reviewCart(array[1], array[2]);
+                        }
+                    }
+                }
+            }
+            ajax.send("action=view_cart&uid="+uid);
+        }
+    } else if(action == "cart_content") {
+        var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/user.php');
+        ajax.onreadystatechange = function () {
+            if (ajaxReturn(ajax) == true) {
+                if(ajax.responseText == "") {
+                    status("An error occurred while fetching your information, sorry.", "black");
+                    flyout('close');
+                } else {
+                    if(ajax.responseText == 0) {
+                        _("cart_pill").style.opacity = 0;
+                    } else {
+                        _("cart_pill").style.opacity = 1;    
+                    }
+                }
+            }
+        }
+        ajax.send("action=cart_content&uid="+uid);
+    }
+
+}
+function addCart(item_id, action2) {
+    //var state = _("condition").value;
+    var size = _("size_chart").value;
+    var price = _("item_price_per_size").value;
+    if(size == "" || price == "") {
+        status("Select your size.", "black");
+    } else if(profile_check == false) { // missing phone or bt or fb
+        popLogin('open');
+    } else {
+        var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/item.php');
+        ajax.onreadystatechange = function () {
+            if (ajaxReturn(ajax) == true) {
+                if(ajax.responseText == "") {
+                    status("An error occurred, sorry.", "black");
+                    flyout('close');
+                } else if(ajax.responseText == 'item_already_added') {
+                    flyout('close');
+                    if(action2 == "checkout") {
+                        status("Ready to checkout?");
+                        flyout('checkout');
+                    } else {
+                        status("This is already in your cart.", "black");
+                        flyout('user_info');
+                    }
+                } else {
+                    flyout('close');
+                    if(action2 == "checkout") {
+                        status("Ready to checkout?");
+                        flyout('checkout');
+                    } else {
+                        status("Added to cart");
+                        flyout('user_info');
+                    }
+                }
+            }
+        }
+        ajax.send("action=add_to_cart&item_id="+item_id+"&size="+size+"&uid="+uid+"&price="+price);
+
+    }
+}
+function selectItem(cart_id, item_id) {
+    var basic = "row hover cart_rows cart_pending";
+    if(cart_id != "" && item_id != "") {
+        var item_class = _("cart_item_"+cart_id+"_"+item_id+"").className;
+        if(item_class == ""+basic+" cart_item_selected") {
+            _("cart_item_"+cart_id+"_"+item_id+"").className = ""+basic+" cart_item_unselected";
+        } else {
+            _("cart_item_"+cart_id+"_"+item_id+"").className = ""+basic+" cart_item_selected";
+        }
+    }
+    var selected_rows = _class(""+basic+" cart_item_selected");
+    var num_selected = selected_rows.length;
+    if(num_selected) {
+        _("review_cart").innerHTML = 'Checkout ('+num_selected+')';
+        _("remove_from_cart").innerHTML = 'Remove ('+num_selected+')';
+    } else {
+        _("review_cart").innerHTML = 'Checkout';
+        _("remove_from_cart").innerHTML = 'Remove';
+    }
+}
+function checkPromo(customer_bt, customer_db_id) {
+    var promo = _("checkout_promo_input").value;
+    if(promo == "") {
+        status("No promo code provided.", "black");
+    } else {
+        var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/payment.php');
+        ajax.onreadystatechange = function () {
+            if (ajaxReturn(ajax) == true) {
+                if(ajax.responseText != "") { // valid promo
+                    //_("checkout_promo_input").disabled = true;
+                    status("Promo code "+promo+" applied!");
+                    var deduction = ajax.responseText;
+                    //_("flyout").innerHTML = '';
+                    //flyout("checkout");
+                    reviewCart(customer_bt, customer_db_id, deduction);
+                } else {
+                    status("Invalid promo code.", "black");
+                    _("checkout_promo_input").value = '';
+                    //_("checkout_promo_input").disabled = false;
+                }
+
+            }
+        }
+        ajax.send("action=check_promo_code&promo="+promo);
+    }
+}
+function reviewCart(customer_bt, customer_db_id, promo) {
+    activated();
+    var delivery = _("delivery_address").value;
+    if(profile_check == false) { // missing phone or bt or fb
+        popLogin('open');
+    } else if(profile_check == "not_activated") { 
+        flyout("close");
+    } else if(delivery == "") {
+        status("Please provide your delivery address for shipping.", "black");
+    } else {
+        saveDelivery(delivery);
+        _("cart_purchases_div").style.display = 'none';
+        _("try_out_custom_order").style.display = 'none';
+        var items_checkout = []; // array of cart rows id 
+        var items_prices = [];  // array of item_prices
+        var basic = "row hover cart_rows cart_pending";
+        var selected = _class(""+basic+" cart_item_selected");
+        var unselected = _class(""+basic+" cart_item_unselected");
+        if(selected.length > 0) { // use the selected ones
+            for(var i=0; i < selected.length; i++) {
+                var item_id = selected[i].id.split('_');
+                _(""+selected[i].id+"").setAttribute( "onClick", "return true;" ); // disable the selected click
+                var item_price = parseInt(_("item_price_"+item_id[3]+"").innerHTML);
+                items_checkout.push(item_id[2]); // id of the cart row
+                items_prices.push(item_price);
+            }
+            if(unselected.length > 0) {
+                for(var m=0; m < unselected.length; m++) {
+                    unselected[m].style.display = 'none';
+                }
+            }
+
+            var total = 0;
+            var k = 0;
+            for(var k in items_prices) { // total brut cost
+                 total += items_prices[k]; 
+            }
+            if(promo) {
+                var promotion = promo;
+                var new_subtotal = total - promotion;
+                var promotion_deduction = '<div class="checkout_subtotal_price" style="color:#ff5050;">Promo: -'+decimals(promotion)+'$</div><div class="checkout_subtotal_price">Subtotal: '+decimals(new_subtotal)+'$</div>';
+            } else {
+                var promotion = 0;
+                var promotion_deduction = '';
+            }
+            //Compute final price
+            //var final_price = finalPrice(total-promotion); // final cost
+            var tvq = (total-promotion) * 0.09975;
+            var tps = (total-promotion) * 0.05;
+            var final_price = (total-promotion) + tps + tvq;
+
+            _("checkout_details").innerHTML = '<div id="checkout_promo_div" class="col-md-12"> <input id="checkout_promo_input" class="inputs_half" placeholder="Promo code" maxlength="25" autocorrect="off" spellcheck="false"><button class="review_cart" style="float:right;" onclick="checkPromo(\''+customer_bt+'\', \''+customer_db_id+'\')">Apply Promo Code</button><hr> </div><div class="col-md-6"><iframe src="https://scavengg.com:6001?cid=" class="payment_method" scrolling="yes" frameBorder="0"></iframe></div><div class="col-md-6"><div class="checkout_subtotal_price">Subtotal: '+decimals(total)+'$</div>'+promotion_deduction+'<div class="checkout_subtotal_price">TPS (5%): '+decimals(tps)+'$</div><div class="checkout_subtotal_price">TVQ (9.975%): '+decimals(tvq)+'$</div><div id="checkout_total_price">CA$'+decimals(final_price)+'</div></div> <hr> <button class="remove_from_cart" onclick="flyout(\'user_info\')">Back</button> <button id="checkout_cart" class="review_cart" onclick="pay(\'checkout\',\''+customer_bt+'\',\''+customer_db_id+'\',\''+decimals(final_price)+'\',\''+items_checkout+'\',\''+promotion+'\')">Place Order</button> </div><br><div class="col-md-12" style="text-align:right;color:#e6e6e6;">You will be charged CA$'+decimals(final_price)+'.</div>';
+            
+            _("cart_header").innerHTML = '<div id="cart_header" class="cart_header"><button class="remove_from_cart" onclick="flyout(\'user_info\')">Back</button> <button id="checkout_cart" class="review_cart" onclick="pay(\'checkout\',\''+customer_bt+'\',\''+customer_db_id+'\',\''+decimals(final_price)+'\',\''+items_checkout+'\')">Place Order</button></div>';
+            
+            getPaymentMethod(uid);
+            _("flyout").scrollTop = _("flyout").scrollHeight;
+            _("delivery_address").disabled = true;
+        
+        } else { // checkout everything in cart
+            var cart_rows = _class(""+basic+"");
+            for(var j=0; j < cart_rows.length; j++) {
+                cart_rows[j].className = ""+basic+" cart_item_selected";
+            }
+            reviewCart(customer_bt, customer_db_id); // restart function
+        }
+    }
+}
+
+function removefromCart() {
+    var items_to_delete = [];
+    var basic = "row hover cart_rows cart_pending";
+    var selected = _class(""+basic+" cart_item_selected");
+    if(selected.length > 0) {
+        for(var i=0; i < selected.length; i++) {
+            var item_id = selected[i].id.split('_');
+            items_to_delete.push(item_id[3]); // id of the item
+        }
+        var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/user.php');
+        ajax.onreadystatechange = function () {
+            if (ajaxReturn(ajax) == true) {
+                if (ajax.responseText.trim() != "items_deleted") {
+                    status("An error occurred while removing these items from your cart.", "black");
+                } else { 
+                    for(var j=0; j < selected.length; j++) {
+                        selected[j].style.display = 'none';
+                    }
+                    //selectItem(); // dont provide any item_id
+                    userInfo("view_cart", "cart_content");
+                }   
+            }
+        }
+        ajax.send("action=delete_from_cart&items_to_delete="+items_to_delete);
+
+    } else {
+        status("Select what you want to remove from your cart.", "black");
+    }
+}
+function saveDelivery(address) {
+    var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/user.php');
+    ajax.onreadystatechange = function () {
+        if (ajaxReturn(ajax) == true) {
+            _("delivery_address").value = ajax.responseText.trim();
+        }
+    }
+    ajax.send("action=save_delivery_address&delivery="+address);
+}
+function getPaymentMethod(uid) {
+    var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/payment.php');
+    ajax.onreadystatechange = function () {
+        if (ajaxReturn(ajax) == true) {
+            if (ajax.responseText != "no_braintree") {
+                //_("settings_payment").src = 'https://scavengg.com:6001?cid='+ajax.responseText;
+                var pay_boxes = _class("payment_method");
+                for(var i = 0; i < pay_boxes.length; i++) {
+                    pay_boxes[i].src = 'https://scavengg.com:6001?cid='+ajax.responseText;
+                }
+                _("bt_checked").style.display = 'block';
+            } else { // no braintree
+                _("bt_checked").style.display = 'none';
+                return true;
+            }   
+        }
+    }
+    ajax.send("action=get_payment_method&uid="+uid);
+}
+function getSearchFilter() {
+    var ajax = ajaxObj("POST", 'https://scavengg.com/php_parsers/search.php');
+    ajax.onreadystatechange = function () {
+        if (ajaxReturn(ajax) == true) {
+            _("filter").innerHTML = '<button class="filter_btn hover" onclick="clearFilter()">Clear filter</button>'+ajax.responseText; 
+            toggleFilter(); 
+        }
+    }
+    ajax.send("action=get_search_filter");
+}
+function showFilterDisplay(action, id, name) {
+    if(action == "add") {
+        _("filter_category").innerHTML += '<div id="filter_'+id+'" class="panel filter_pill">'+name+' <span class="glyphicon glyphicon-remove" onclick="filter(\'category\', \''+id+'\')" style="margin:3px;cursor:pointer;"></span></div>';
+    } else if(action == "remove") {
+        _("filter_"+id+"").style.display = 'none';
+    } else { // clear
+        _("filter_category").innerHTML = "";
+    }
+}
+function filter(what, id, name) {
+    if(what == "category") {
+        var base_class = 'filter_tabs filter_hover';
+        var current_class = _("subcat_"+id+"").className;
+        if(current_class == ''+base_class+' filter_tab_selected') {
+            _("subcat_"+id+"").className = ''+base_class+' filter_tab_unselected';
+            var index = categories.indexOf(id);
+            categories.splice(index, 1);
+            search(event, _("order_input").value, categories, max_price);
+            showFilterDisplay("remove", id);
+        } else {
+            _("subcat_"+id+"").className = ''+base_class+' filter_tab_selected';
+            categories.push(id);
+            search(event, _("order_input").value, categories, max_price);
+            showFilterDisplay("add", id, name);
+        }
+    }
+}
+function setRange(max_price_set) {
+    _("max_price_range").value = max_price_set;
+    showVal(max_price_set);
+}
+function clearFilter() {
+    var filter_divs = _class("filter_divs");
+    var filter = _("filter");
+    var filter_btns = _class("filter_btn");
+    var filter_tabs = _class("filter_tabs");
+    for(var i = 0; i < filter_tabs.length; i++) {
+        filter_tabs[i].className = 'filter_tabs filter_hover filter_tab_unselected';
+    }
+    for(var i = 0; i < filter_divs.length; i++) {
+        filter_divs[i].style.display = 'none';
+    }
+    for(var i = 0; i < filter_btns.length; i++) {
+        filter_btns[i].style.display = 'none';
+    }
+    filter.style.maxHeight = '0px';
+    _("toggle_filter").className = 'toggle_filter hover';
+    //clear the array of filters
+    categories = [];
+    suggested(max_price, window.innerWidth);
+    showFilterDisplay("clear");
+}
+function toggleFilter() {
+    var filter_divs = _class("filter_divs");
+    var filter = _("filter");
+    var filter_btns = _class("filter_btn");
+    if(filter.style.maxHeight == '0px') {
+        filter.style.maxHeight = '10000px';
+        _("toggle_filter").className = 'toggle_filter rotate hover';
+    } else {
+        filter.style.maxHeight = '0px';
+        _("toggle_filter").className = 'toggle_filter hover';
+    }
+    for(var i = 0; i < filter_divs.length; i++) {
+        if(filter_divs[i].style.display == 'none') {
+            filter_divs[i].style.display = 'block';
+        } else {
+            filter_divs[i].style.display = 'none';
+        }
+    }
+    for(var i = 0; i < filter_btns.length; i++) {
+        if(filter_btns[i].style.display == 'none') {
+            filter_btns[i].style.display = 'block';
+        } else {
+            filter_btns[i].style.display = 'none';
+        }
+    }
+}
+function scrollMenu() {
+    var winHeight = window.innerHeight;
+    var docHeight = document.body.scrollHeight;
+    var yPos = window.pageYOffset;
+    var nearBottom = 10;
+    if((winHeight + yPos) >= (docHeight - nearBottom)) { //reaches bottom at near 50px
+        if(_("order_input").value == '') { // means no specific search, only suggestions
+            suggested(max_price, window.innerWidth);
+        }
+    } else if(yPos > 85) {
+        _("back_to_top").style.display = 'block';
+        _("header").setAttribute('style', 'box-shadow:1px 2px 10px -2px rgba(0,0,0,0.2);zoom:0.7;');
+    } else {
+        _("back_to_top").style.display = 'none';
+        _("header").setAttribute('style', 'box-shadow:none;zoom:1;');
+    }
+}
+window.addEventListener("scroll", scrollMenu);
+document.addEventListener('DOMContentLoaded', function(){
+    loading('open');
+    if(window.innerWidth > 767) {
+        _("logo_title").innerHTML = 'SC<span style="letter-spacing:-4px;">A<span style="letter-spacing:1px;">V</span></span>ENGG';
+    } else {
+        _("logo_title").innerHTML = 'SC<span style="letter-spacing:-2px;">A<span style="letter-spacing:1px;">V</span></span>ENGG';
+    }
+    suggested(max_price, window.innerWidth);
+    //getSearchFilter();
+    _("order_input").focus();
+
+    setTimeout(function() {
+        if(profile_check == false) {
+            loading('close');
+            popup('countdown');
+        }
+        /*
+        Typed.new('#typed', {
+            strings: ["Anytime", "Anywhere", "Streetwear just for you", "Welcome to Scavengg"],
+            typeSpeed: 40,
+            backSpeed: 50,
+            backDelay: 900,
+            callback: function() { // removes cursor at the end
+                $( "span" ).siblings( ".typed-cursor" ).css( "animation", "none" );
+                $( "span" ).siblings( ".typed-cursor" ).css( "opacity", "0" );
+            }
+        });
+        */
+    }, 1500);
+});
+</script>
+<body id="page">
+
+    <div id="header">
+        <div class="logo_box">
+            <!--
+            <div class="logo" onclick="link('/')"></div>
+            -->
+            <div class="row">
+                <div class="col-md-4 col-xs-4">
+                    <div class="logo" style="margin:10px 0px;" onclick="window.location.reload()"></div>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <div id="logo_title" class="logo_title"><span onclick="window.location.reload()">SC<span style="letter-spacing:-4px;">A<span style="letter-spacing:1px;">V</span></span>ENGG</div>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <div class="header_text"><span onclick="flyout('custom_request')">CUSTOM</span>&nbsp; &middot; &nbsp; <span onclick="link('faq.html')">FAQ</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="status_bar"></div>
+    <div id="loading">
+        <div class="loading_logo pulse"></div>
+        <!--
+        <div class="spinner">
+            <div class="double-bounce1"></div>
+            <div class="double-bounce2"></div>        
+        </div>
+        -->
+    </div>
+
+    <div id="flyout"><img src="https://scavengg.com/photos/loading_gif.gif" style="width:150px;height:150px;margin:15px auto;"></div>
+    <div id="skin" onclick="flyout('close')"></div>
+
+    <div id="popup_div" class="popup_div">
+        <div id="popup" class="popup"></div>
+    </div>
+
+    <div id="back_to_top" class="panel" onclick="window.scrollTo(0, 0)">TOP</div>
+
+    <div id="login">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="close_login" onclick="popLogin('close')"><span class="glyphicon glyphicon-remove"></span></div>
+                <h3>Setup your account. It's free.</h3>
+                <hr>
+            </div>
+            <div id="facebook_phone_login_box" class="col-md-6">
+                1. Connect to Facebook <span id="fb_checked" class="glyphicon glyphicon-ok-sign checked"></span>
+                <div id='facebook_login' onclick='fblogin()'><img src='https://facebookbrand.com/wp-content/themes/fb-branding/prj-fb-branding/assets/images/fb-art.png'> Continue with Facebook</div>   
+                <div class="disclaimer">Scavengg will never to post to your Facebook without your permission.</div>
+                <hr>
+                2. Phone Number <span id="phone_checked" class="glyphicon glyphicon-ok-sign checked"></span> <br>
+                <input id="phone" type="number" class="phone_input" onkeyup="savePhone(this.value)" maxlength="10" placeholder="Enter Phone number" autocorrect="off" spellcheck="false" onkeypress="return event.charCode >= 48 && event.charCode <= 57" autocomplete="off">
+            </div>
+            <hr>
+            <div id="payment_login_box" class="col-md-6" style="border-left:1px #e6e6e6 solid;">
+                3. Payment Method <span id="bt_checked" class="glyphicon glyphicon-ok-sign checked"></span>
+                <div class="iframe_wrapper">
+                    <iframe src="https://scavengg.com:6001?cid=" id="settings_payment" scrolling="yes" frameBorder="0"></iframe>
+                </div>
+                <div class="disclaimer">Payments powered by Braintree, a division of Paypal. Secure and reliable payments.</div>
+            </div>
+            <div class="col-md-12">
+                <hr>
+            </div>
+            <!--
+            <div class="col-md-12" onclick="popLogin('close')" style="padding:10px 0px;cursor:pointer;">
+                <h4>No thanks, I won't be using Scavengg at all.</h4>
+            </div>
+            -->
+        </div>
+    </div>
+
+    <div id="main" class="block">
+        <div class="block_title"></div>
+        <div class="order_input_div panel">
+            <div class="profile_pic" onclick="flyout('user_info')">
+                <div id="cart_pill"></div>
+            </div>
+            <div id="welcome_mess"><span id="typed"></span></div>
+            <div class="order_input_wrapper">
+            <input id="order_input" class="order_input" onkeyup="search(event, this.value, categories, max_price)" placeholder="Search" maxlength="255" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+            </div>
+            <!--
+            <br>
+            <div id="toggle_filter" class="toggle_filter rotate hover" onclick="toggleFilter()"><span class="glyphicon glyphicon-filter" title="Filter Search"></span></div>
+            <div id="toggle_price_filter" class="toggle_price_filter hover" onclick="flyout('price_filter')"><span class="glyphicon glyphicon-tag" title="Set Price Range"></span></div>
+            <div id="toggle_custom_request" class="toggle_custom_request hover" onclick="flyout('custom_request')"><span class="glyphicon glyphicon-gift" title="Custom Request"></span></div>
+            <div id="filter"></div>
+            <!--
+            <div id="filter_display">
+                <div id="filter_price" onclick="flyout('price_filter')"><div class="filter_pill panel">0 - 2500 $</div></div>
+                <div id="filter_category"></div>
+            </div>
+            -->
+            
+            <div id="search_loader" class="loader"></div>
+            <!--<div id="bottom_loader" class="bottom_loader"><div class="bottom_loader_icon"></div></div>-->
+        </div>
+        <div id="search_results" class="search_results"></div>
+        <div id="footer" class="footer">
+            <div class="logo" onclick="window.location.reload()"></div>
+            <div>&copy;Scavengg, All Rights Reserved, <span id="year"></span></div>
+        </div>
+    </div>
+
+<script>
+
+      function initMap() {
+
+            var delivery_input = _("delivery_address");
+            var autocomplete = new google.maps.places.Autocomplete(delivery_input);
+ 
+            autocomplete.addListener('place_changed', function() {
+
+                var delivery = _('delivery_address').value; // from the input
+                if(delivery == "") {
+                    status("You must provide a delivery address.", "black");
+                } else {
+                    saveDelivery(delivery);
+                }
+            });
+
+        }
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD5_hB-W5k_Z-io5_paWu7CwdJ_7cIHxhQ&libraries=places"
+    async defer></script>
+
+</body>
+</html>

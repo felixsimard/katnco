@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>scavengg.com</title>
+<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+
+<!-- Latest compiled and minified CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Favicon image -->
+<link rel="shortcut icon" href="https://scavengg.com/photos/logo_ico.ico"/>
+
+<!-- CSS and JS -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+<script src="js/main.js"></script>
+<script src="js/ajax.js"></script>
+
+<script>
+
+
+window.addEventListener("load", function() {
+
+	var ajax = ajaxObj("POST", "https://scavengg.com/php_includes/logout.php");
+    ajax.onreadystatechange = function() {
+	        if(ajaxReturn(ajax) == true) {
+				if(ajax.responseText == "logged_out"){
+					window.location = '/';
+				} else {
+                    window.location = '/';
+				}
+	        } 
+        }
+		ajax.send("action=logout");
+
+
+});
+
+
+</script>
+</head>
+
+<body>
+logging out...
+</body>
+</html>
