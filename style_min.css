@@ -34,14 +34,12 @@
 .jumbo_title {
     position: relative;
     top: 18%;
-    color: white;
     font-size: 50px;
     font-weight: 600;
 }
 .sub_jumbo_title {
     position: relative;
     top: 21%;
-    color: white;
     font-size: 22px;
     font-weight: 600;
 }

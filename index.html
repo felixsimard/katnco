@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
-<title>Kat&Co | Agence de consultation</title>
+<title>KatnCo &middot; Agence de consultation</title>
 <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
 
 <!-- Latest compiled and minified CSS AND JS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 
 <!-- Favicon image -->
 <link rel="shortcut icon" href="https://katnco.ca/photos/katnco_logo_ico.ico"/>
@@ -22,150 +22,199 @@
 
 <script>
 function email() {
-    //var date = new Date().toLocaleString();
-    //var subject = '';
-    document.location.href = "mailto:katiarenaud@gmail.com";
-    //document.location.href = "mailto:katiarenaud@gmail.com?subject="
-    //+ encodeURIComponent(subject);
+  //var date = new Date().toLocaleString();
+  //var subject = '';
+  document.location.href = "mailto:katiarenaud@gmail.com";
+  //document.location.href = "mailto:katiarenaud@gmail.com?subject="
+  //+ encodeURIComponent(subject);
 }
 function link(url) {
   var win = window.open(url, '_blank');
   win.focus();
 }
 function menu(action) {
-    if(action == "close") {
-        _("skin").style.display = 'none';
-        _("menu").style.left = -100+'vw';
-    } else {
-        _("skin").style.display = 'block';
-        _("menu").style.left = 0+'px';
-    }
+  if(action == "close") {
+    _("skin").style.display = 'none';
+    _("menu").style.left = -100+'vw';
+  } else {
+    _("skin").style.display = 'block';
+    _("menu").style.left = 0+'px';
+  }
 }
 function slide() {
-    var img = ["bridge.jpg", "road.jpg", "malaysia.jpg"];
-    var length = img.length;
-    var index = 1;
-    setInterval(function() {
-        _("slideshow").style.opacity = 0;
-        if(index < length) {
-            _("slideshow").style.opacity = 1;
-            _("slideshow").style.background = 'url("https://katnco.ca/photos/'+img[index]+'") no-repeat center center';
-            _("slideshow").style.backgroundSize = "cover";
-            index++;
-        } else {
-            index = 0;
-            _("slideshow").style.opacity = 1;
-            _("slideshow").style.background = 'url("https://katnco.ca/photos/'+img[index]+'") no-repeat center center';
-            _("slideshow").style.backgroundSize = "cover";
-        }
-    }, 5000);
+  var img = ["bridge.jpg", "road.jpg", "malaysia.jpg"];
+  var length = img.length;
+  var index = 1;
+  setInterval(function() {
+    _("slideshow").style.opacity = 0;
+    if(index < length) {
+      _("slideshow").style.opacity = 1;
+      _("slideshow").style.background = 'url("https://katnco.ca/photos/'+img[index]+'") no-repeat center center';
+      _("slideshow").style.backgroundSize = "cover";
+      index++;
+    } else {
+      index = 0;
+      _("slideshow").style.opacity = 1;
+      _("slideshow").style.background = 'url("https://katnco.ca/photos/'+img[index]+'") no-repeat center center';
+      _("slideshow").style.backgroundSize = "cover";
+    }
+  }, 5000);
 
 }
 function yScroll(){
-    var height = window.innerHeight;
-	var yPos = window.pageYOffset;
+  var height = window.innerHeight;
+  var yPos = window.pageYOffset;
 
-    var ratio = yPos/height;
-    var decimal = Math.round(ratio * 1000) / 1000;
-    var scroll_opacity = 1 - decimal; // this gives an actual opacity value ex: 0.807
-    var scroll_blur = decimal * 50; // this gives a 2 digit number ex: 34.6
-    //_("intro_box").style.opacity = scroll_opacity;
-    //_("intro_box").setAttribute("style","filter:blur(" + scroll_blur + "px)");
-    //_("intro_box").setAttribute("style","-webkit-filter:blur(" + scroll_blur + "px)");
-    if(yPos > 50) {
-        _("navbar").style.boxShadow = '1px 2px 10px -2px rgba(0,0,0,0.2)';
-     } else {
-        _("navbar").style.boxShadow = '';
-    }
+  var ratio = yPos/height;
+  var decimal = Math.round(ratio * 1000) / 1000;
+  var scroll_opacity = 1 - decimal; // this gives an actual opacity value ex: 0.807
+  var scroll_blur = decimal * 50; // this gives a 2 digit number ex: 34.6
+  //_("intro_box").style.opacity = scroll_opacity;
+  //_("intro_box").setAttribute("style","filter:blur(" + scroll_blur + "px)");
+  //_("intro_box").setAttribute("style","-webkit-filter:blur(" + scroll_blur + "px)");
+  if(yPos > 50) {
+    //_("navbar").style.boxShadow = '1px 2px 10px -2px rgba(0,0,0,0.2)';
+    _("navbar").setAttribute('style', 'background:white;border-bottom: 1px #e6e6e6 solid;');
+    _("menu_icon").setAttribute('style', 'color:black;');
+  } else {
+    _("navbar").setAttribute('style', 'background:transparent;border-bottom: 1px #e6e6e6 transparent;');
+    _("menu_icon").setAttribute('style', 'color:white;');
+    //_("navbar").style.boxShadow = '';
+  }
 }
 window.addEventListener("scroll", yScroll);
 
 document.addEventListener('DOMContentLoaded', function(){
-
+  var d = new Date();
+  var year = d.getFullYear();
+  _("year").innerHTML = year;
 });
 
 $(window).on("load", function() {
-    slide();
+  //slide();
 });
 </script>
 
 <body id="page">
 
-    <div id="menu_icon" onclick="menu('open')"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
-    <div id="menu">
-        <div class="close_menu" onclick="menu('close')"><span class="glyphicon glyphicon-remove"></span></div>
-        <a id="mission_link" href="#mission"><div onclick="menu('close')" class="menu_tab">Mission</div></a>
-        <a id="service_link" href="#service"><div onclick="menu('close')" class="menu_tab">Expériences</div></a>
-        <a id="partners_link" href="#partners"><div onclick="menu('close')" class="menu_tab">Partenaires</div></a>
-        <a id="contact_link" href="#contact"><div onclick="menu('close')" class="menu_tab">Contact</div></a>
-    </div>
-    <div id="skin" onclick="menu('close')"></div>
+  <div id="menu_icon" onclick="menu('open')"><span class="glyphicon glyphicon-menu-hamburger"></span></div>
+  <div id="menu">
+    <div class="close_menu" style="margin-right:12px;" onclick="menu('close')"><span class="glyphicon glyphicon-remove"></span></div>
+    <a id="mission_link" href="#mission"><div onclick="menu('close')" class="menu_tab">Mission</div></a>
+    <a id="service_link" href="#service"><div onclick="menu('close')" class="menu_tab">Expériences</div></a>
+    <a id="bio_link" href="#bio"><div onclick="menu('close')" class="menu_tab">À propos</div></a>
+    <a id="partners_link" href="#partners"><div onclick="menu('close')" class="menu_tab">Partenaires</div></a>
+    <a id="contact_link" href="#contact"><div onclick="menu('close')" class="menu_tab">Contact</div></a>
+  </div>
+  <div id="skin" onclick="menu('close')"></div>
 
-    <div id="navbar" class="navbar">
-        <div class="logo_font">Kat&Co</div>
-    </div>
+  <div class="skew_bg"></div>
 
-    <div id="slideshow" class="slideshow">
-        <div class="jumbo_title">Kat&Co</div>
-        <div class="sub_jumbo_title">Entrepreneuriat. Éducation. Technologie.</div>
-    </div>
+  <div id="navbar" class="navbar">
+    <div class="logo_font">KatnCo</div>
+  </div>
 
-    <div id="mission" class="mission">
-        <div class="mission_title">&ldquo;</div>
-        Kat&Co est une agence de consultation qui a pour mission de créer des ponts entre les milieux académiques, scientifiques et d’affaires.
+  <div id="slideshow" class="slideshow">
+    <div class="jumbo_title"><span>KatnCo</span></div>
+    <div class="sub_jumbo_title">Entrepreneuriat. Éducation. Technologie.</div>
+  </div>
+
+  <div id="mission" class="mission">
+    <div class="mission_title">&ldquo;</div>
+    KatnCo est une agence de consultation qui a pour mission de créer des ponts entre les milieux académiques, scientifiques et d’affaires.
+  </div>
+
+  <div id="service" class="service_section">
+    <div class="row">
+      <div class="col-md-4">
+        <div class="service">
+          <div class="service_liner"></div>
+          Commercialiser des produits technologiques faisant appel à l’intelligence artificielle.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service">
+          <div class="service_liner"></div>
+          Structurer et accélérer la réalisation de projets d'innovation en apprentissage automatique au sein des PME.
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="service">
+          <div class="service_liner"></div>
+          Développer des programmes de formation spécialisés.
+        </div>
       </div>
 
-    <div id="service" class="service_section">
-        <div class="row">
-        <div class="col-md-4">
-            <div class="service hover">
-                <div class="service_title"><u class="pink_font">AI</u></div>
-                Programme d'accélération de commercialisation de produits AI.<br>
-                Offre de formation exécutive.
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="service hover">
-                <div class="service_title"><u class="pink_font">Big Data</u></div>
-                Fonderie d'innovation ouverte.<br>
-                Programme de traitement de données stratégiques pour le commerce de détail.
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="service hover">
-                <div class="service_title"><u class="pink_font">Écosystèmes</u></div>
-                Communauté d'excellence dans le secteur de la direction des ventes. <br>
-                Roadmap de formation appliquée pour investisseurs.
-            </div>
-        </div>
-        </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="bio" class="service_section">
+
+    <div class="col-md-2 col-xs-0"></div>
+    <div class="col-md-3 col-xs-12">
+      <div class="bio_profil_pic"></div>
     </div>
 
-    <div id="partners" class="partners">
-      <hr>
-        <div class="mission_title">Partenaires</div>
-        <div class="row">
-        <div class="col-md-4" onclick="link('https://www.primaressource.com')">
-            <img class="partner_img" src="https://katnco.ca/photos/prima.png">
-        </div>
-        <div class="col-md-4" onclick="link('https://www.espacecdpq.com/')">
-            <img class="partner_img" src="https://katnco.ca/photos/espace_cdpq.jpg">
-        </div>
-        <div class="col-md-4" onclick="link('https://galilei.ca/')">
-            <img class="partner_img" src="https://katnco.ca/photos/galilei-logo-baseline.jpg">
-        </div>
-        </div>
+    <div class="col-md-5 col-xs-12">
+      <div class="bio_content">
+        <div class="bio_title">Katia Renaud<!--<span class="small_grey_text">, fondatrice</span>--></div>
         <hr>
-    </div>
+        Relationnelle et énergique, Katia dirige avec conviction depuis plus de 20 ans dans les secteurs de l’entrepreneuriat, de l’éducation et des technologies. Passionnée des affaires et des PME, elle a fortement contribué à l’évolution de la pédagogie entrepreneuriale par la création de l’École d’Entrepreneurship de Beauce et le développement des programmes dont le Parcours Techno en collaboration avec le Massachusetts Institute of Technology (MIT). Elle a enseigné pendant plus de 10 ans en management à HEC Montréal tout en donnant des conférences et en poursuivant des projets de recherche appliquée.
+        <br><br>
+        Elle mène aujourd’hui les destinées de son entreprise, KatnCo inc., une agence de conseil stratégique et pédagogique qui a pour mission de créer des ponts entre le milieu académique et le monde des affaires afin de favoriser le transfert de connaissances et d’expérience et la création de talent.
+        <br><br>
+        Katia contribue, entre autres, à accélérer la mise en marché de produits technologiques faisant appel à l’intelligence artificielle, à structurer et faciliter la réalisation de projets d'innovation en apprentissage automatique au sein des PME et à développer en mode collaboratif et ouvert, des programmes de formation spécialisés.
 
-    <div id="contact" class="contact">
-        <div class="social">
-            <img class="social_icon" onclick="link('https://www.linkedin.com/in/katiarenaud/')" src="https://katnco.ca/photos/linkedin.png">
-            <img class="social_icon" onclick="email()" src="https://katnco.ca/photos/email_icon.png">
-        </div>
+        <br><br>
+        <span class="glyphicon glyphicon-link"></span> <a href='https://linkedin.com/in/katiarenaud' target="_blank">LinkedIn</a>
+      </div>
     </div>
+    <div class="col-md-2 col-xs-0"></div>
 
-    <div class="disclaimer">&copy;Kat&Co, 2019 <br> All Rights Reserved</div>
+  </div>
+
+  <div id="partners" class="partners">
+    <hr>
+    <div class="mission_title">Partenaires</div>
+    <div class="row">
+
+      <div class="col-md-4 col-xs-12" onclick="link('https://www.espacecdpq.com/')">
+        <img class="partner_img" src="photos/cdpq.png">
+      </div>
+      <div class="col-md-4 col-xs-12" onclick="link('https://www.banqueducanada.ca/')">
+        <img class="partner_img" src="photos/boc.png">
+      </div>
+      <div class="col-md-4 col-xs-12" onclick="link('https://www.fxinnovation.com/')">
+        <img class="partner_img" src="photos/ftq.jpg">
+      </div>
+      <div class="col-md-4 col-xs-12" onclick="link('https://galilei.ca/')">
+        <img class="partner_img" src="photos/galilei-logo-baseline.jpg">
+      </div>
+      <div class="col-md-4 col-xs-12" onclick="link('https://www.fondsftq.com/')">
+        <img class="partner_img" src="photos/fx.png">
+      </div>
+      <div class="col-md-4 col-xs-12" onclick="link('https://www.primaressource.com')">
+        <img class="partner_img" src="photos/prima.png">
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div id="contact" class="contact">
+    <div class="social">
+      <img class="social_icon" onclick="link('https://www.linkedin.com/in/katiarenaud/')" src="https://katnco.ca/photos/linkedin.png">
+      <img class="social_icon" onclick="email()" src="https://katnco.ca/photos/email_icon.png">
+    </div>
+  </div>
+
+  <div class="disclaimer">
+    <div class="logo_font">KatnCo</div>
+    <br>
+    &copy; KatnCo, <span id="year"></span>. All rights reserved.
+  </div>
 
 </body>
 </html>

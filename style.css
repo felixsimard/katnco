@@ -1,247 +1,337 @@
 body {
-    padding: 0px;
-    margin: 0px;
-    overflow-x: hidden;
-    font-family: 'Libre Baskerville', serif;
+  padding: 0px;
+  margin: 0px;
+  overflow-x: hidden;
+  font-family: 'Libre Baskerville', serif;
 }
 a {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: black;
 }
 a:link {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: black;
 }
 a:visited {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: black;
 }
 a:hover {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: black;
 }
 a:active {
-    text-decoration: none;
-    color: white;
+  text-decoration: none;
+  color: black;
+}
+:root {
+  /*--brand_color: rgba(244, 130, 126, 0.5);*/
+  --brand_color: rgba(250, 195, 193, 1);
+  --brand_color2: rgb(242, 102, 100);
+}
+.brand_color {
+  background: var(--brand_color);
 }
 u {
-    border-bottom: 1px dotted black;
-    text-decoration: none;
+  border-bottom: 1px dotted black;
+  text-decoration: none;
 }
 .navbar {
-    position: fixed;
-    z-index: 10;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    background: white;
-    max-height: 250px;
-    padding: 15px 0px;
-    color: black;
-    text-align: center;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
-    cursor: pointer;
-    /*box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);*/
+  position: fixed;
+  z-index: 10;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  background: transparent;
+  padding: 20px 0px;
+  color: black;
+  text-align: center;
+  border-bottom: 1px #e6e6e6 transparent;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  /*box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);*/
 }
 .logo_font {
-    min-width: 100px;
-    max-width: 200px;
-    background: rgba(244, 130, 126, 0.5);
-    font-size: 30px;
-    font-weight: 800;
-    padding: 10px;
-    margin: 0px auto;
-    border: none;
-    border-radius: 3px;
-    color: rgb(242, 102, 100);
+  min-width: 100px;
+  max-width: 150px;
+  background: var(--brand_color);
+  font-size: 20px;
+  font-weight: 800;
+  padding: 5px;
+  margin: 0px auto;
+  border: none;
+  border-radius: 3px;
+  color: var(--brand_color2);
 }
 #skin {
-    position: fixed;
-    z-index: 1000;
-    top: 0px;
-    left: 0px;
-    display: none;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(38, 38, 38, 0.7);
+  position: fixed;
+  z-index: 1000;
+  top: 0px;
+  left: 0px;
+  display: none;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(38, 38, 38, 0.7);
 }
 #menu {
-    position: fixed;
-    z-index: 10000;
-    left: -100vw;
-    top: 0px;
-    width: 40vw;
-    height: 100vh;
-    padding: 10px 25px;
-    font-size: 23px;
-    font-weight: 700;
-    background: rgba(244, 130, 126, 1);
-    color: white;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+  position: fixed;
+  z-index: 10000;
+  left: -100vw;
+  top: 0px;
+  width: 30vw;
+  height: 100vh;
+  padding: 10px 0px;
+  font-size: 22px;
+  font-weight: 600;
+  background: white;
+  color: white;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 .menu_tab {
-    width: 100%;
-    max-height: 200px;
-    padding: 25px 0px;
-    text-align: center;
-    background: transparent;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+  width: 100%;
+  padding: 30px 0px 30px 30px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 0px;
+  cursor: pointer;
+  color: black;
+  border-right: 4px transparent solid;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 .menu_tab:hover {
-    background: rgba(255, 255, 255, 0.4);
+  border-right: 4px var(--brand_color2) solid;
+  background: rgba(250, 250, 250, 1);
 }
 #menu_icon {
-    position: fixed;
-    z-index: 100;
-    top: 15px;
-    left: 50px;
-    font-size: 2.5em;
-    font-weight: 700;
-    color: black;
-    cursor: pointer;
+  position: fixed;
+  z-index: 100;
+  top: 22px;
+  left: 40px;
+  font-size: 2em;
+  font-weight: 300;
+  color: white;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.menu_icon:hover {
+  box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);
 }
 .close_menu {
-    text-align: right;
-    font-size: 1.1em;
-    margin: 10px auto;
-    cursor: pointer;
+  text-align: right;
+  font-size: 1em;
+  margin: 10px auto;
+  cursor: pointer;
+  color: black;
 }
 .slideshow {
-    width: 100%;
-    height: 75vh;
-    margin: 20px auto;
-    margin-top: 80px;
-    background: url('https://katnco.ca/photos/bridge.jpg') no-repeat center center;
-    background-size: cover;
-    opacity: 1;
-    padding: 0px 15px;
-    text-align: center;
-    -webkit-transition: all 0.2s ease;
-    -moz-transition: all 0.2s ease;
-    transition: all 0.2s ease;
+  width: 100%;
+  height: 75vh;
+  margin: 20px auto;
+  margin-top: 80px;
+  /*background: url('https://katnco.ca/photos/bridge.jpg') no-repeat center center;
+  background-size: cover;*/
+  background: transparent;
+  opacity: 1;
+  padding: 0px 15px;
+  text-align: center;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
+.skew_bg {
+  position: absolute;
+  width: 100vw;
+  height: 75vh;
+  top: 0px;
+  left: 0px;
+  background: var(--brand_color2);
+  z-index: -1;
+}
+/*
+.skew_bg::after{
+  content: '';
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background: var(--brand_color2);
+  z-index: -1;
+  bottom: 0;
+  transform-origin: left bottom;
+  transform: skewY(-6deg);
+}
+*/
 .jumbo_title {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  top: 25%;
+  color: black;
+  font-size: 80px;
+  font-weight: 600;
+  text-shadow: 2px 2px white;
+}
+.jumbo_title > span{
     position: relative;
-    top: 25%;
-    color: white;
-    font-size: 80px;
-    font-weight: 600;
+    display: inline-block;
+}
+.jumbo_title > span:before, .jumbo_title > span:after{
+    content: '';
+    position: absolute;
+    top: 50%;
+    border-bottom: 2px solid;
+    width: 100px;
+    margin: 0 20px;
+}
+.jumbo_title > span:before{
+    right: 100%;
+}
+.decorated > span:after{
+    left: 100%;
 }
 .sub_jumbo_title {
-    position: relative;
-    top: 28%;
-    color: white;
-    font-size: 35px;
-    font-weight: 600;
+  position: relative;
+  top: 28%;
+  color: black;
+  font-size: 35px;
+  font-weight: 600;
+  text-shadow: 1px 1px white;
 }
 .partners{
-    width: 95%;
-    min-height: 100px;
-    max-height: 500px;
-    margin: 30px auto;
-    padding: 0px 20px;
-    text-align: center;
+  width: 95%;
+  min-height: 100px;
+  max-height: 500px;
+  margin: 45px auto;
+  padding: 0px 20px;
+  text-align: center;
 }
 .partner_img {
-    min-width: 50px;
-    max-width: 100%;
-    min-height: 75px;
-    max-height: 150px;
-    filter: grayscale(0);
-    vertical-align: middle;
-    cursor: pointer;
+  width: 200px;
+  height: 65px;
+  margin: 40px 0px;
+  filter: grayscale(1);
+  vertical-align: middle;
+  cursor: pointer;
 }
 .service_section {
-    width: 95%;
-    min-height: 400px;
-    max-height: 400vh;
-    margin: 30px auto;
-    padding: 0px;
+  width: 95%;
+  min-height: 400px;
+  max-height: 400vh;
+  margin: 100px auto;
+  padding: 0px;
+  overflow-y: auto;
+}
+.service_liner {
+  width: 50%;
+  height: 3px;
+  background: var(--brand_color2);
+  margin: 10px 0px;
+  margin-bottom: 25px;
 }
 .service {
-    width: 95%;
-    height: 350px;
-    border: none;
-    border-radius: 10px;
-    margin: 15px auto;
-    padding: 25px;
-    font-size: 22px;
-    font-weight: 500;
-    cursor: pointer;
-    text-align: left;
-    color: white;
-    background: rgba(244, 130, 126, 0.5);
+  width: 100%;
+  padding: 50px;
+  background: white;
+  font-weight: 900;
+  font-size: 28px;
+  text-align: left;
+  color: black;
 }
 .service_title {
-    font-size: 28px;
-    font-weight: 700;
-    color: rgb(242, 102, 100);
-    margin: 15px auto;
+  font-size: 28px;
+  font-weight: 700;
+  color: rgb(242, 102, 100);
+  margin: 15px auto;
 }
-.pink_font  {
-  border-bottom: 1px rgb(242, 102, 100) dotted;
+.bio_profil_pic {
+  width: 225px;
+  height: 225px;
+  margin: 0px auto;
+  border-radius: 50%;
+  background: url('photos/bio.png') no-repeat center center;
+  background-size: cover;
+  /*box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);*/
+}
+.bio_title {
+  font-weight: 800;
+  font-size: 20px;
+}
+.bio_content {
+  padding: 18px 10px 5px 10px;
+  background: white;
+  color: black;
+  font-size: 15px;
+  font-weight: 400;
+  text-align: justify;
+  line-height: 1.8;
 }
 .text_bg {
-    background: rgba(38, 38, 38, 0.7);
-    padding: 10px;
+  background: rgba(38, 38, 38, 0.7);
+  padding: 10px;
 }
 .mission {
-    width: 95%;
-    margin: 30px auto;
-    margin-bottom: 65px;
-    padding: 0px;
-    font-size: 35px;
-    font-weight: 500;
-    padding: 15px 25px;
-    text-align: center;
-    color: black;
+  width: 95%;
+  margin: 30px auto;
+  margin-bottom: 50px;
+  padding: 0px;
+  font-size: 35px;
+  padding: 15px 25px;
+  text-align: center;
+  color: black;
 }
 .mission_title {
-    font-size: 40px;
-    color: black;
-    font-weight: 800;
-    text-align: center;
-    margin: 15px auto;
-    padding: 10px 0px;
+  font-size: 40px;
+  color: black;
+  font-weight: 200;
+  text-align: center;
+  margin: 15px auto;
+  margin-bottom: 50px;
+  padding: 10px 0px;
 }
 .hover {
-    cursor: pointer;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
-    box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);
 }
 .hover:hover {
-    box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);
+  box-shadow: 1px 2px 10px -2px rgba(0,0,0,0.2);
 }
 .contact {
-    width: 95%;
-    min-height: 100px;
-    margin: 30px auto;
-    background: rgba(245, 245, 245, 0.8);
-    padding: 20px 30px;
+  width: 95%;
+  text-align: center;
+  min-height: 100px;
+  margin: 0px auto;
+  background: white;
+  padding: 25px 10px;
 }
 .social_icon {
-    width: 60px;
-    height: 60px;
-    margin: 0px 10px;
-    cursor: pointer;
+  width: 60px;
+  height: 60px;
+  margin: 0px 10px;
+  cursor: pointer;
+  border-radius: 50%;
 }
 .disclaimer {
-    width: 100%;
-    min-height: 100px;
-    font-size: 18px;
-    color: #e6e6e6;
-    text-align: center;
-    padding: 10px 0px;
-    margin: 20px auto;
+  width: 100%;
+  font-size: 12px;
+  color: black;
+  text-align: center;
+  border-top: 1px #e6e6e6 solid;
+  padding: 75px 50px;
+  margin-top: 50px;
+  margin-bottom: 25px;
+}
+.small_grey_text {
+  font-size: 18px;
+  color: #d8d8d8;
 }
