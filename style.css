@@ -291,10 +291,12 @@ u {
   font-size: 40px;
   color: black;
   font-weight: 200;
-  text-align: center;
   margin: 15px auto;
   margin-bottom: 50px;
   padding: 10px 0px;
+}
+.text_center {
+  text-align: center;
 }
 .hover {
   cursor: pointer;
